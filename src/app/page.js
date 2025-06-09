@@ -1,4 +1,3 @@
-import Header from "@/components/layout/Header.jsx";
 import Hero from "@/components/layout/Hero";
 import HomeMenu from "@/components/layout/HomeMenu";
 import SectionHeaders from "@/components/layout/SectionHeaders";
@@ -6,7 +5,6 @@ import SectionHeaders from "@/components/layout/SectionHeaders";
 export default function Home() {
   return (
     <>
-      <Header />
       <Hero />
       <HomeMenu />
       <section className="text-center my-16">
@@ -37,14 +35,15 @@ export default function Home() {
           mainHeader={"Get in touch"}
         />
         <div className="mt-8">
-          <a className="text-4xl underline text-gray-500" href="tel:+919600289216">
+          <a
+            className="text-4xl underline text-gray-500"
+            href="tel:+919600289216"
+          >
             +91 9600 289 216
           </a>
         </div>
       </section>
-      <footer className="border-t p-8 text-center text-gray-500 mt-16">
-        &copy; 2025 All rights reserved
-      </footer>
+      
     </>
   );
 }

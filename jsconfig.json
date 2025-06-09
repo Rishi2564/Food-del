@@ -1,7 +1,10 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",       // set base URL to project root
     "paths": {
-      "@/*": ["./src/*"]
+      "@/app/*": ["./src/app/*"] ,
+      "@/models/*": ["./src/models/*"],
+      "@/components/*": ["./src/components/*"]          // no leading dot in "src/*"
     }
   }
 }
