@@ -44,7 +44,7 @@ const LoginPage = () => {
         <div className="my-4 text-center text-gray-500">
           or login with provider
         </div>
-        <button onClick={()=>signIn('google', {callbackUrl:'/'})} className="flex items-center gap-2  justify-center">
+        <button type="button" onClick={()=>signIn('google', {callbackUrl:'/'})} className="flex items-center gap-2  justify-center">
           <Image src="/google.png" width={24} height={24} alt="" />
           Login with google
         </button>
