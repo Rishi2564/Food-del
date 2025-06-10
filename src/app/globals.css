@@ -39,9 +39,9 @@ button[type="submit"]:disabled,
   @apply border-0   text-white;
   @apply cursor-not-allowed bg-red-400;
 }
-button {
-  @apply  text-gray-700 w-full font-semibold;
-  @apply border border-gray-300 rounded-2xl px-6 py-2;
+button,.button {
+  @apply flex gap-2 justify-center text-gray-700 w-full font-semibold;
+  @apply border-0 rounded-2xl px-6 py-2;
 }
 
 
