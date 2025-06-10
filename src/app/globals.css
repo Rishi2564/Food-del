@@ -1,6 +1,5 @@
 @import "tailwindcss";
 
-
 :root {
   --primary: #f13a01; /* Deep Blue or your favorite shade */
 }
@@ -14,22 +13,36 @@
   border-color: var(--primary);
 }
 
-section.hero{
+section.hero {
   @apply grid;
-  grid-template-columns: .4fr .6fr;
+  grid-template-columns: 0.4fr 0.6fr;
 }
 input[type="email"],
 input[type="password"],
-input[type="text"] ,
+input[type="text"],
 input[type="number"] {
-  @apply block w-full my-2 rounded-xl ;
-  @apply border p-2 border-gray-100 bg-gray-100;
+  @apply block w-full my-2 rounded-2xl;
+  @apply border border-gray-200 pl-2 pr-20 py-2  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
 }
-button[type="submit"], .submit{
+input[type="email"]:disabled,
+input[type="password"]:disabled,
+input[type="text"]:disabled {
+  @apply bg-gray-300;
+  @apply cursor-not-allowed;
+}
+button[type="submit"],
+.submit {
   @apply border-0   text-white;
 }
-button{
-  @apply  text-gray-700 w-full font-semibold;
-  @apply border border-gray-300 rounded-xl px-6 py-2;
+button[type="submit"]:disabled,
+.submit:disabled {
+  @apply border-0   text-white;
+  @apply cursor-not-allowed bg-red-400;
 }
+button {
+  @apply  text-gray-700 w-full font-semibold;
+  @apply border border-gray-300 rounded-2xl px-6 py-2;
+}
+
+
 

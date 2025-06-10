@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 const RegisterPage = () => {
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [creatingUser, setCreatingUser] = useState(false);
   const [userCreated, setUserCreated] = useState(false);
+  const [error, setError] = useState(false);
   async function handleFormSubmit(ev) {
     ev.preventDefault();
     setCreatingUser(true);
@@ -26,9 +28,24 @@ const RegisterPage = () => {
     setCreatingUser(false);
   }
   return (
-    <div>
+    <div className="mt-10">
       <section>
         <h1 className="text-center text-primary text-4xl mb-4">Register</h1>
+        {userCreated && (
+          <div className="my-4 text-center">
+            User Created. Now you can{" "}
+            <Link className="underline" href={"/login"}>
+              {" "}
+              Login &raquo;
+            </Link>{" "}
+            .
+          </div>
+        )}
+        {error && (
+          <div className="my-4 text-center">
+            Error creating user. Please try again.
+          </div>
+        )}
         <form
           action=""
           className="block max-w-xs mx-auto "
@@ -46,11 +63,15 @@ const RegisterPage = () => {
             type="password"
             placeholder="password"
             value={password}
-             disabled={creatingUser}
+            disabled={creatingUser}
             onChange={(ev) => setPassword(ev.target.value)}
             required
           />
-          <button type="submit" className="bg-primary"  disabled={creatingUser}>
+          <button
+            type="submit"
+            className="bg-primary mt-3"
+            disabled={creatingUser}
+          >
             Register
           </button>
           <div className="my-4 text-center text-gray-500">
@@ -60,6 +81,12 @@ const RegisterPage = () => {
             <Image src="/google.png" width={24} height={24} alt="" />
             Login with google
           </button>
+          <div className="text-center my-4 text-gray-500 border-t border-gray-300 pt-4">
+            Existing account?{" "}
+            <Link className="underline" href="/login">
+              Login here &raquo;
+            </Link>
+          </div>
         </form>
       </section>
     </div>

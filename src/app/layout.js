@@ -11,15 +11,15 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={roboto.className}>
+    <html lang="en" className="scroll-smooth">
+      <body className={`${roboto.className}`}>
         <Header />
-        <main className="max-w-4xl mx-auto border-transparent p-4">
+        <main className="max-w-4xl mx-auto border-transparent p-4 ">
           {children}
-          <footer className="border-t p-8 text-center text-gray-500 mt-16">
-            &copy; 2025 All rights reserved
-          </footer>
         </main>
+        <footer className="border-t  p-8 text-center  text-gray-500 mt-16">
+          &copy; 2025 All rights reserved
+        </footer>
       </body>
     </html>
   );

@@ -6,6 +6,12 @@
       "dom.iterable",
       "esnext"
     ],
+    "paths": {
+      "@/*": ["./src/*"] ,
+      // "@/app/*": ["./src/app/*"] ,
+      // "@/models/*": ["./src/models/*"],
+      // "@/components/*": ["./src/components/*"]          // no leading dot in "src/*"
+    },
     "allowJs": true,
     "skipLibCheck": true,
     "strict": false,
