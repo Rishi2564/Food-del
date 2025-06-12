@@ -3,12 +3,29 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ProfilePage = () => {
   const session = useSession();
+  const [userName, setUserName]= useState('');
   const { status } = session;
+  useEffect(()=>{
+    if (status === "authenticated") {
+      setUserName(session.data.user.name);
+    }
+  },[session,status])
   console.log(session);
+  function handleProfileInfoUpdate(ev){
+    ev.preventDefault();
+    fetch('/api/profile',{
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        },
+      body: JSON.stringify({name: userName})
+    } );
+    }
+  
   if (status === "loading") {
     return "Loading...";
   }
@@ -19,7 +36,7 @@ const ProfilePage = () => {
   return (
     <section className="mt-4">
       <h1 className="text-center text-primary text-4xl mb-4">Profile</h1>
-      <form className="max-w-md mx-auto " action="">
+      <div className="max-w-md mx-auto ">
         <div className="flex items-center">
           <div className="">
             {" "}
@@ -33,27 +50,30 @@ const ProfilePage = () => {
                   alt="avatar"
                 />
                 <button
-                  className="absolute bottom-0 left-1/2 -translate-x-1/2 bg-gray-400 !text-white text-sm !px-1 rounded mb-1 shadow-md hover:bg-gray-700 transition"
+                  className="absolute bottom-0 px-1 bg-gray-400 !text-white text-sm  rounded mb-1.5 shadow-md opacity-0 hover:opacity-85 transition"
                   type="button"
                 >
-                  Change Avatar
+                 Edit
                 </button>
               </div>
             </div>
           </div>
-          <div className="grow ml-2">
+          <form className="grow ml-2" onSubmit={handleProfileInfoUpdate}>
             <input
               type="text"
               name=""
+              value={userName}
+              onChange={(ev)=>setUserName(ev.target.value)}
               placeholder="First and last name"
               id=""
             />
+            <input type="email" name="" value={session.data.user.email} id="" disabled/>
             <button className="bg-primary" type="submit">
               Save
             </button>
-          </div>
+          </form>
         </div>
-      </form>
+      </div>
     </section>
   );
 };
