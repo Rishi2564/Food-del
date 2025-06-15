@@ -2,15 +2,14 @@
 import { useSession } from "next-auth/react";
 import Image from "next/image";
 import { redirect } from "next/navigation";
-
 import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState("");
   const [image, setImage] = useState("");
-  const [saved, setSaved] = useState(false);
-  const [isSaving, setIsSaving] = useState(false);
+
   const { status } = session;
   useEffect(() => {
     if (status === "authenticated") {
@@ -21,35 +20,59 @@ const ProfilePage = () => {
   console.log(session);
   async function handleProfileInfoUpdate(ev) {
     ev.preventDefault();
-    setSaved(false);
-    setIsSaving(true);
-    const response = await fetch("/api/profile", {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ name: userName, image }),
-    });
-    setIsSaving(false);
-    if (response.ok) {
-      setSaved(true);
-    }
-  }
-  async function handleFileChange(ev) {
-    console.log(ev);
-    const files = ev?.target.files;
-    if (files?.length === 1) {
-      const data = new FormData();
-      data.set("file", files[0]);
-      data.set("files", files);
-      const response = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+
+    const savingPromise = new Promise(async (resolve, reject) => {
+      const response = await fetch("/api/profile", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name: userName, image }),
       });
-      const link = await response.json();
-      setImage(link);
-    }
+      if (response.ok) resolve();
+      else reject();
+    });
+    await toast.promise(savingPromise, {
+      loading: "Saving profile info",
+      success: "Profile info saved",
+      error: "Error saving profile info",
+    });
   }
+
+ async function handleFileChange(ev) {
+  console.log(ev);
+  const files = ev?.target?.files;
+  if (files?.length === 1) {
+    const data = new FormData();
+    data.set("file", files[0]);
+
+    const uploadPromise = new Promise(async (resolve, reject) => {
+      try {
+        const response = await fetch("/api/upload", {
+          method: "POST",
+          body: data,
+        });
+
+        if (!response.ok) {
+          throw new Error("Something went wrong during upload");
+        }
+
+        const link = await response.json();
+        setImage(link);
+        resolve(); // Resolve only if everything went fine
+      } catch (err) {
+        reject(err); // This will be caught by toast.promise
+      }
+    });
+
+    await toast.promise(uploadPromise, {
+      loading: "Uploading file...",
+      success: "File uploaded!",
+      error: "Failed to upload file.",
+    });
+  }
+}
+  
   if (status === "loading") {
     return "Loading...";
   }
@@ -61,16 +84,6 @@ const ProfilePage = () => {
     <section className="mt-4">
       <h1 className="text-center text-primary text-4xl mb-4 ">Profile</h1>
       <div className="max-w-md mx-auto ">
-        {saved && (
-          <h2 className="text-center bg-green-100 rounded-lg p-4 border border-green-300">
-            Profile saved!
-          </h2>
-        )}
-        {isSaving && (
-          <h2 className="text-center bg-blue-100 rounded-lg p-4 border border-blue-300">
-            Saving...
-          </h2>
-        )}
         <div className="flex items-center">
           <div className="">
             {" "}
