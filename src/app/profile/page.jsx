@@ -15,7 +15,8 @@ const ProfilePage = () => {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
-  const [isAdmin, setIsAdmin]= useState(false)
+  const [isAdmin, setIsAdmin]= useState(false);
+  const [profileFetched, setProfileFetched]= useState(false);
   const { status } = session;
   useEffect(() => {
     if (status === "authenticated") {
@@ -29,6 +30,7 @@ const ProfilePage = () => {
           setCountry(data.country);
           setCity(data.city);
           setIsAdmin(data.admin)
+          setProfileFetched(true);
         });
       });
     }
@@ -97,7 +99,7 @@ const ProfilePage = () => {
     }
   }
 
-  if (status === "loading") {
+  if (status === "loading" || !profileFetched) {
     return "Loading...";
   }
   if (status === "unauthenticated") {
