@@ -1,10 +1,11 @@
 "use client";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-
+import UserTabs from "@/components/layout/UserTabs"
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState("");
@@ -14,6 +15,7 @@ const ProfilePage = () => {
   const [postalCode, setPostalCode] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
+  const [isAdmin, setIsAdmin]= useState(false)
   const { status } = session;
   useEffect(() => {
     if (status === "authenticated") {
@@ -26,6 +28,7 @@ const ProfilePage = () => {
           setPostalCode(data.postalCode);
           setCountry(data.country);
           setCity(data.city);
+          setIsAdmin(data.admin)
         });
       });
     }
@@ -103,8 +106,9 @@ const ProfilePage = () => {
   const userImage = session.data.user.image;
   return (
     <section className="mt-4">
-      <h1 className="text-center text-primary text-4xl mb-4 ">Profile</h1>
-      <div className="max-w-lg mx-auto ">
+      <UserTabs isAdmin={isAdmin} />
+      
+      <div className="max-w-lg mx-auto mt-8 ">
         <div className="flex ">
           <div className="">
             {" "}
@@ -126,7 +130,7 @@ const ProfilePage = () => {
                     className="hidden"
                     onChange={handleFileChange}
                   />
-                  <span className="px-8 ">Edit</span>
+                  <span className="px-8 text-white">Edit</span>
                 </label>
               </div>
             </div>
