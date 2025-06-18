@@ -1,17 +1,8 @@
 @import "tailwindcss";
+@theme{
+  --color-primary:#f13a01;
+}
 
-:root {
-  --primary: #f13a01; /* Deep Blue or your favorite shade */
-}
-.bg-primary {
-  background-color: var(--primary);
-}
-.text-primary {
-  color: var(--primary);
-}
-.border-primary {
-  border-color: var(--primary);
-}
 
 section.hero {
   @apply grid;
@@ -23,13 +14,13 @@ input[type="text"],
 input[type="number"],
 input[type="tel"] {
   @apply block w-full mb-2 rounded-2xl;
-  @apply border border-gray-200 pl-2 pr-20 py-2  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
+  @apply border border-gray-200 p-2 py-2  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500;
 }
 input[type="email"]:disabled,
 input[type="password"]:disabled,
 input[type="tel"]:disabled,
 input[type="text"]:disabled {
-  @apply bg-gray-300;
+  @apply bg-gray-300 border-0 text-gray-500;
   @apply cursor-not-allowed;
 }
 button,.button {
@@ -38,7 +29,7 @@ button,.button {
 }
 button[type="submit"],
 .submit {
-  @apply border-0 px-2  text-white;
+  @apply border-primary px-2  text-white;
 }
 button[type="submit"]:disabled,
 .submit:disabled {
@@ -56,6 +47,6 @@ div.tabs > *{
   @apply  bg-gray-300 text-gray-700 rounded-full py-2 px-4;
 }
 div.tabs>*.active{
-  @apply text-white;
-  background-color: #f13a01;
+  @apply bg-primary text-white;
+ 
 }
