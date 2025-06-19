@@ -1,11 +1,10 @@
 "use client";
 import { useSession } from "next-auth/react";
-import Image from "next/image";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import toast from "react-hot-toast";
-import UserTabs from "@/components/layout/UserTabs"
+import UserTabs from "@/components/layout/UserTabs";
+import EditableImage from "@/components/layout/EditableImage";
 const ProfilePage = () => {
   const session = useSession();
   const [userName, setUserName] = useState("");
@@ -65,39 +64,7 @@ const ProfilePage = () => {
     });
   }
 
-  async function handleFileChange(ev) {
-    console.log(ev);
-    const files = ev?.target?.files;
-    if (files?.length === 1) {
-      const data = new FormData();
-      data.set("file", files[0]);
-
-      const uploadPromise = new Promise(async (resolve, reject) => {
-        try {
-          const response = await fetch("/api/upload", {
-            method: "POST",
-            body: data,
-          });
-
-          if (!response.ok) {
-            throw new Error("Something went wrong during upload");
-          }
-
-          const link = await response.json();
-          setImage(link);
-          resolve(); // Resolve only if everything went fine
-        } catch (err) {
-          reject(err); // This will be caught by toast.promise
-        }
-      });
-
-      await toast.promise(uploadPromise, {
-        loading: "Uploading file...",
-        success: "File uploaded!",
-        error: "Failed to upload file.",
-      });
-    }
-  }
+  
 
   if (status === "loading" || !profileFetched) {
     return "Loading...";
@@ -115,25 +82,8 @@ const ProfilePage = () => {
           <div className="">
             {" "}
             <div className=" p-2 rounded-lg flex-col justify-center">
-              <div className="relative w-fit mx-auto group">
-                {image && (
-                  <Image
-                    className="rounded-lg"
-                    src={image}
-                    width={250}
-                    height={250}
-                    alt="avatar"
-                  />
-                )}
-
-                <label className="absolute bottom-0 left-1/2 -translate-x-1/2 px-2 py-1 bg-gray-400 text-white text-sm rounded-xl shadow-md opacity-0 group-hover:opacity-100 transition cursor-pointer mb-3">
-                  <input
-                    type="file"
-                    className="hidden"
-                    onChange={handleFileChange}
-                  />
-                  <span className="px-8 text-white">Edit</span>
-                </label>
+              <div className="">
+                <EditableImage link={image} setLink={setImage}/>
               </div>
             </div>
           </div>

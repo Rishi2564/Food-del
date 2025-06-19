@@ -29,7 +29,7 @@ button,.button {
 }
 button[type="submit"],
 .submit {
-  @apply border-primary px-2  text-white;
+  @apply border-primary bg-primary  text-white;
 }
 button[type="submit"]:disabled,
 .submit:disabled {

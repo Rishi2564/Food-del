@@ -9,9 +9,10 @@ export async function PUT(req) {
   const {name, image, ...otherUserInfo}= data;
   const session = await getServerSession(authOptions);
   const email = session.user.email;
-  
-  await User.updateOne({ email }, {name:data.name, image:data.image});
+  console.log("Saving to DB:", { name, image, otherUserInfo });
+  await User.updateOne({ email }, {name, image});
   await UserInfo.findOneAndUpdate({email},otherUserInfo,{upsert:true});
+ 
   return Response.json(true); 
 }
 
@@ -23,7 +24,7 @@ export async function GET(){
     return Response.json({});
   }
   const user = await User.findOne({ email }).lean();
-  const userInfo = await UserInfo.findOne({}).lean();
+  const userInfo = await UserInfo.findOne({email}).lean();
 
   return Response.json({...user, ...userInfo});
 }

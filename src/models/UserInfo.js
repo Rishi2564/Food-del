@@ -10,4 +10,4 @@ const UserInfoSchema= new Schema({
     admin:{type:Boolean, default:false},
 },{timeStamps:true});
 
-export const UserInfo= models.UserInfo || model('UserInfo', UserInfoSchema)
+export const UserInfo= models?.UserInfo || model('UserInfo', UserInfoSchema)
