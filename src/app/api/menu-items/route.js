@@ -7,3 +7,8 @@ export async function POST(req) {
   const menuItemDoc = await MenuItem.create(data);
   return Response.json(menuItemDoc);
 }
+
+export async function GET(req) {
+  mongoose.connect(process.env.MONGO_URI);
+  return Response.json(await MenuItem.find());
+}
