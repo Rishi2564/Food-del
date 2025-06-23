@@ -11,6 +11,7 @@ import MenuItemsForm from "@/components/layout/MenuItemsForm";
 import Left from "@/components/icons/Left";
 import { redirect, useParams } from "next/navigation";
 import Trash from "@/components/icons/Trash";
+import DeleteButton from "@/components/DeleteButton";
 const EditMenuItemPage = () => {
   const { id } = useParams();
   const { loading, data } = useProfile();
@@ -89,12 +90,7 @@ const EditMenuItemPage = () => {
       <div className="max-w-md mx-auto mt-4">
         <div className="max-w-xs ml-auto pl-4">
           {" "}
-          <button
-            onClick={handleDeleteClick}
-            className="mt-4 text-white "
-          >
-            <Trash />
-          </button>
+          <DeleteButton label={<Trash />} onDelete={handleDeleteClick} />
         </div>
       </div>
     </section>

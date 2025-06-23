@@ -1,4 +1,5 @@
 "use client";
+import DeleteButton from "@/components/DeleteButton";
 import Trash from "@/components/icons/Trash";
 import UserTabs from "@/components/layout/UserTabs";
 
@@ -101,9 +102,13 @@ const CategoriesPage = () => {
             <button type="submit" className="bg-primary border-primary">
               {editedCategory ? "Update" : "Create"}
             </button>
-            <button type="button" onClick={() => {setEditedCategory(null);
-              setCategoryName("");
-            }}>
+            <button
+              type="button"
+              onClick={() => {
+                setEditedCategory(null);
+                setCategoryName("");
+              }}
+            >
               Cancel
             </button>
           </div>
@@ -130,13 +135,10 @@ const CategoriesPage = () => {
                 >
                   Edit
                 </button>
-                <button
-                  className="text-sm items-center transition-transform duration-200 hover:scale-110"
-                  type="button"
-                  onClick={() => handleDeleteClick(c._id)}
-                >
-                  <Trash className="size-4" />
-                </button>
+                <DeleteButton
+                  label={<Trash />}
+                  onDelete={() => handleDeleteClick(c._id)}
+                />
               </div>
             </div>
           ))}
