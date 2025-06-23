@@ -1,6 +1,6 @@
 import React from "react";
 
-const ChevronDown = () => {
+const ChevronDown = ({ className = "size-6" }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -8,7 +8,7 @@ const ChevronDown = () => {
       viewBox="0 0 24 24"
       strokeWidth={1.5}
       stroke="currentColor"
-      className="size-6"
+      className={className}
     >
       <path
         strokeLinecap="round"

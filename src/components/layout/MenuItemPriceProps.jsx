@@ -1,7 +1,11 @@
 import Plus from "@/components/icons/Plus";
 import Trash from "@/components/icons/Trash";
+import ChevronUp from "@/components/icons/ChevronUp";
+import ChevronDown from "@/components/icons/ChevronDown";
+import { useState } from "react";
 
 const MenuItemPriceProps = ({ name, props, setProps, addLabel }) => {
+  const [isOpen, setIsOpen] = useState(false);
   function addProps() {
     setProps((oldProps) => {
       return [...oldProps, { name: "", price: 0 }];
@@ -22,56 +26,61 @@ const MenuItemPriceProps = ({ name, props, setProps, addLabel }) => {
   }
   return (
     <div className="bg-gray-200 p-2 rounded-md mb-2">
-      <div className="flex gap-1">
-        <div className="">
-          <button className="inline-flex p-1" type="button">
-            Toggle
-          </button>
-        </div>
-        <h3 className="text-gray-700">{name}</h3>
-      </div>
-      {props?.length > 0 &&
-        props.map((size, index) => (
-          <div className="flex gap-2 items-end">
-            <div className="">
-              {" "}
-              <label htmlFor="">Name</label>
-              <input
-                type="text"
-                placeholder="Size name"
-                value={size.name}
-                onChange={(ev) => editProps(ev, index, "name")}
-              />
-            </div>
-            <div className="">
-              <label htmlFor="">Extra Price</label>
-              <input
-                type="number"
-                name=""
-                placeholder="Extra Price"
-                id=""
-                value={size.price}
-                onChange={(ev) => editProps(ev, index, "price")}
-              />
-            </div>
-            <div className="">
-              <button
-                type="button"
-                onClick={() => removeProp(index)}
-                className="bg-white mb-2 px-2"
-              >
-                <Trash />
-              </button>
-            </div>
-          </div>
-        ))}
       <button
+        className="flex p-1 border-0 !justify-start"
         type="button"
-        onClick={addProps}
-        className="bg-white items-center"
+        onClick={() => setIsOpen((prev) => !prev)}
       >
-        <Plus className="w-4 h-4" /> <span>{addLabel} </span>
+        {isOpen && <ChevronUp />}
+        {!isOpen && <ChevronDown />}
+
+        <span>{name}</span>
+        <span>({props?.length})</span>
       </button>
+      <div className={isOpen ? "block" : "hidden"}>
+        {props?.length > 0 &&
+          props.map((size, index) => (
+            <div className="flex gap-2 items-end">
+              <div className="">
+                {" "}
+                <label htmlFor="">Name</label>
+                <input
+                  type="text"
+                  placeholder="Size name"
+                  value={size.name}
+                  onChange={(ev) => editProps(ev, index, "name")}
+                />
+              </div>
+              <div className="">
+                <label htmlFor="">Extra Price</label>
+                <input
+                  type="number"
+                  name=""
+                  placeholder="Extra Price"
+                  id=""
+                  value={size.price}
+                  onChange={(ev) => editProps(ev, index, "price")}
+                />
+              </div>
+              <div className="">
+                <button
+                  type="button"
+                  onClick={() => removeProp(index)}
+                  className="bg-white mb-2 px-2"
+                >
+                  <Trash />
+                </button>
+              </div>
+            </div>
+          ))}
+        <button
+          type="button"
+          onClick={addProps}
+          className="bg-white items-center"
+        >
+          <Plus className="w-4 h-4" /> <span>{addLabel} </span>
+        </button>
+      </div>
     </div>
   );
 };

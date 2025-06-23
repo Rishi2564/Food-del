@@ -1,4 +1,5 @@
 "use client";
+import Trash from "@/components/icons/Trash";
 import UserTabs from "@/components/layout/UserTabs";
 
 import { useProfile } from "@/components/useProfile";
@@ -7,43 +8,62 @@ import toast from "react-hot-toast";
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
   const [categoryName, setCategoryName] = useState("");
-  const [editedCategory, setEditedCategory]= useState(null);
+  const [editedCategory, setEditedCategory] = useState(null);
   const { loading: profileLoading, data: profileData } = useProfile();
   useEffect(() => {
     fetchCategories();
-
   }, []);
-  function fetchCategories(){
+  function fetchCategories() {
     fetch("/api/categories").then((res) => {
       res.json().then((categories) => {
         setCategories(categories);
       });
     });
   }
+  async function handleDeleteClick(_id) {
+    console.log();
+    const promise = new Promise(async (resolve, reject) => {
+      const response = await fetch("/api/categories?_id=" + _id, {
+        method: "DELETE",
+      });
+      if (response.ok) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+
+    await toast.promise(promise, {
+      loading: "Deleting category",
+      success: "Category deleted",
+      error: "Error",
+    });
+    fetchCategories();
+  }
+
   async function handleCategorySubmit(ev) {
     ev.preventDefault();
     const creationPromise = new Promise(async (resolve, reject) => {
-      const data={name:categoryName};
-      if(editedCategory){
+      const data = { name: categoryName };
+      if (editedCategory) {
         data._id = editedCategory._id;
       }
       const response = await fetch("/api/categories", {
-        method:editedCategory?"PUT": "POST",
+        method: editedCategory ? "PUT" : "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(data),
       });
-      setCategoryName('');
+      setCategoryName("");
       fetchCategories();
       setEditedCategory(null);
       if (response.ok) resolve();
       else reject();
     });
     toast.promise(creationPromise, {
-      loading: editedCategory?"Updating Category"
-      :"Creating category",
-      success: editedCategory?"Category Updated": "Category created",
+      loading: editedCategory ? "Updating Category" : "Creating category",
+      success: editedCategory ? "Category Updated" : "Category created",
       error: "Error creating category",
     });
   }
@@ -61,9 +81,12 @@ const CategoriesPage = () => {
       <form className="mt-8" action="" onSubmit={handleCategorySubmit}>
         <div className="flex gap-2 items-end">
           <div className="grow">
-            <label htmlFor="">{editedCategory? 'Update Category':'New Category Name'}
-              {editedCategory&&(
-                <>: <b>{editedCategory.name}</b></>
+            <label htmlFor="">
+              {editedCategory ? "Update Category" : "New Category Name"}
+              {editedCategory && (
+                <>
+                  : <b>{editedCategory.name}</b>
+                </>
               )}
             </label>
             <input
@@ -74,22 +97,48 @@ const CategoriesPage = () => {
               id=""
             />
           </div>
-          <div className="pb-2">
+          <div className="pb-2 flex gap-1">
             <button type="submit" className="bg-primary border-primary">
-              {editedCategory? 'Update': 'Create'}
+              {editedCategory ? "Update" : "Create"}
+            </button>
+            <button type="button" onClick={() => {setEditedCategory(null);
+              setCategoryName("");
+            }}>
+              Cancel
             </button>
           </div>
         </div>
       </form>
       <div className="">
-        <h2 className="mt-8 text-sm text-gray-500">Edit Category:</h2>
+        <h2 className="mt-8 text-sm text-gray-500">Existing Category:</h2>
         {categories?.length > 0 &&
           categories.map((c) => (
-            <button onClick={()=> {setEditedCategory(c);
-              setCategoryName(c.name);
-            }} className=" rounded-xl p-2 px-4 flex gap-2 cursor-pointer mb-1">
-              <span>{c.name}</span>
-            </button>
+            <div
+              key={c._id}
+              className="bg-gray-100 rounded-xl p-2 px-4 flex gap-2  mb-2 shadow-md"
+            >
+              <div className="flex items-center grow ">{c.name}</div>
+              <div className="flex gap-2">
+                {" "}
+                <button
+                  className="text-sm items-center transition-transform duration-200 hover:scale-110"
+                  type="button"
+                  onClick={() => {
+                    setEditedCategory(c);
+                    setCategoryName(c.name);
+                  }}
+                >
+                  Edit
+                </button>
+                <button
+                  className="text-sm items-center transition-transform duration-200 hover:scale-110"
+                  type="button"
+                  onClick={() => handleDeleteClick(c._id)}
+                >
+                  <Trash className="size-4" />
+                </button>
+              </div>
+            </div>
           ))}
       </div>
     </section>

@@ -10,6 +10,7 @@ import Link from "next/link";
 import MenuItemsForm from "@/components/layout/MenuItemsForm";
 import Left from "@/components/icons/Left";
 import { redirect, useParams } from "next/navigation";
+import Trash from "@/components/icons/Trash";
 const EditMenuItemPage = () => {
   const { id } = useParams();
   const { loading, data } = useProfile();
@@ -23,6 +24,25 @@ const EditMenuItemPage = () => {
       });
     });
   }, []);
+
+  function handleDeleteClick() {
+    const promise = new Promise(async (resolve, reject) => {
+      const res = await fetch("/api/menu-items?_id=" + id, {
+        method: "DELETE",
+      });
+      if (res.ok) {
+        resolve();
+      } else {
+        reject();
+      }
+    });
+    toast.promise(promise, {
+      loading: "Deleting",
+      success: "Menu item deleted",
+      error: "Error deleting menu item",
+    });
+    setRedirectToItems(true);
+  }
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
     data = { ...data, _id: id };
@@ -66,6 +86,17 @@ const EditMenuItemPage = () => {
         </Link>
       </div>
       <MenuItemsForm menuItem={menuItem} onSubmit={handleFormSubmit} />
+      <div className="max-w-md mx-auto mt-4">
+        <div className="max-w-xs ml-auto pl-4">
+          {" "}
+          <button
+            onClick={handleDeleteClick}
+            className="mt-4 text-white "
+          >
+            <Trash />
+          </button>
+        </div>
+      </div>
     </section>
   );
 };

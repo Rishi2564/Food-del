@@ -14,20 +14,20 @@ const Header = () => {
   return (
     <header className="flex items-center justify-between border border-transparent mt-2">
       <nav className="flex gap-8 text-gray-500 font-semibold items-center">
-        <Link className="text-primary font-semibold text-2xl pl-3" href="/">
+        <Link className="text-primary font-semibold text-2xl pl-3  transition-transform duration-200 hover:scale-110" href="/">
           ST PIZZA
         </Link>
-        <Link href={"/"}>Home</Link>
-        <Link href={""}>Menu</Link>
-        <Link href={""}>About</Link>
-        <Link href={""}>Contact</Link>
+        <Link className=" transition-transform duration-200 hover:scale-110" href={"/"}>Home</Link>
+        <Link className=" transition-transform duration-200 hover:scale-110" href={""}>Menu</Link>
+        <Link className=" transition-transform duration-200 hover:scale-110" href={""}>About</Link>
+        <Link className=" transition-transform duration-200 hover:scale-110" href={""}>Contact</Link>
       </nav>
       <nav className="flex items-center gap-4 mr-3 text-gray-500 font-semibold">
         {status === "authenticated" && (
           <>
-          <Link href={'/profile'} className="whitespace-nowrap">Hello,{' '}{userName}</Link>
+          <Link href={'/profile'} className="whitespace-nowrap  transition-transform duration-200 hover:scale-110">Hello,{' '}{userName}</Link>
             <button
-              className="bg-primary submit rounded-full  text-white px-8 py-2"
+              className="bg-primary submit rounded-full  text-white px-8 py-2  transition-transform duration-200 hover:scale-110"
               onClick={() => signOut()}
             >
               Logout
@@ -40,7 +40,7 @@ const Header = () => {
             <Link href="/login">Login</Link>
             <Link
               href="/register"
-              className="bg-primary rounded-full  text-white px-8 py-2"
+              className="bg-primary rounded-full  text-white px-8 py-2  transition-transform duration-200 hover:scale-110"
             >
               Register
             </Link>
