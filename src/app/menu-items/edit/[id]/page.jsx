@@ -80,7 +80,7 @@ const EditMenuItemPage = () => {
   return (
     <section className="mt-8">
       <UserTabs isAdmin={true} />
-      <div className="max-w-md mx-auto mt-8">
+      <div className="max-w-lg mx-auto mt-8">
         <Link href={"/menu-items"} className="button">
           <Left />
           Show all menu items

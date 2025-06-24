@@ -14,7 +14,7 @@ input[type="password"],
 input[type="text"],
 input[type="number"],
 input[type="tel"] {
-  @apply block w-full mb-2 rounded-2xl bg-gray-100;
+  @apply block w-full mb-2 rounded-2xl bg-gray-100 shadow-md;
   @apply border border-gray-200 p-2 py-2  focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-200;
 }
 input[type="email"]:disabled,
@@ -25,7 +25,7 @@ input[type="text"]:disabled {
   @apply cursor-not-allowed;
 }
 button,.button {
-  @apply flex gap-2 justify-center text-gray-700 w-full font-semibold;
+  @apply flex gap-2 justify-center text-gray-700 w-full font-semibold shadow-lg;
   @apply border border-gray-300 rounded-2xl px-6 py-2;
 }
 button[type="submit"],
