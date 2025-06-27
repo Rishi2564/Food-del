@@ -1,5 +1,5 @@
 "use client";
-import { useProfile } from "@/components/useProfile";
+import { useProfile } from "@/components/UseProfile";
 import React from "react";
 
 import EditableImage from "@/components/layout/EditableImage";
@@ -10,12 +10,12 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 
 import Left from "@/components/icons/Left";
-import {redirect} from "next/navigation";
+import { redirect } from "next/navigation";
 import MenuItemsForm from "@/components/layout/MenuItemsForm";
 const NewMenuItemPage = () => {
   const { loading, data } = useProfile();
 
-  const [redirectToItems, setRedirectToItems]= useState(false);
+  const [redirectToItems, setRedirectToItems] = useState(false);
   async function handleFormSubmit(ev, data) {
     ev.preventDefault();
     const savingPromise = new Promise(async (resolve, reject) => {
@@ -37,10 +37,10 @@ const NewMenuItemPage = () => {
       success: "Saved",
       error: "Error",
     });
-   setRedirectToItems(true);
+    setRedirectToItems(true);
   }
-  if(redirectToItems){
-    return redirect('/menu-items');
+  if (redirectToItems) {
+    return redirect("/menu-items");
   }
   if (loading) {
     return "Loading user info...";
@@ -52,14 +52,12 @@ const NewMenuItemPage = () => {
     <section className="mt-8">
       <UserTabs isAdmin={true} />
       <div className="max-w-lg mx-auto mt-8">
-     
         <Link href={"/menu-items"} className="button">
-        <Left />
+          <Left />
           Show all menu items
-         
         </Link>
       </div>
-     
+
       <MenuItemsForm menuItem={""} onSubmit={handleFormSubmit} />
     </section>
   );

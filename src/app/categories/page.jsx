@@ -3,7 +3,7 @@ import DeleteButton from "@/components/DeleteButton";
 import Trash from "@/components/icons/Trash";
 import UserTabs from "@/components/layout/UserTabs";
 
-import { useProfile } from "@/components/useProfile";
+import { useProfile } from "@/components/UseProfile";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 const CategoriesPage = () => {

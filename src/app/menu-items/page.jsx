@@ -2,7 +2,7 @@
 import Right from "@/components/icons/Right";
 import EditableImage from "@/components/layout/EditableImage";
 import UserTabs from "@/components/layout/UserTabs";
-import { useProfile } from "@/components/useProfile";
+import { useProfile } from "@/components/UseProfile";
 import Image from "next/image";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";

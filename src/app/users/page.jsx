@@ -1,7 +1,7 @@
 "use client";
 import Trash from "@/components/icons/Trash";
 import UserTabs from "@/components/layout/UserTabs";
-import { useProfile } from "@/components/useProfile";
+import { useProfile } from "@/components/UseProfile";
 import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
@@ -31,13 +31,19 @@ const UsersPage = () => {
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4 grow">
                 <div className="text-gray-900">
                   {" "}
-                  {!!user.name && <span className=""><b>{user.name}</b></span>}
+                  {!!user.name && (
+                    <span className="">
+                      <b>{user.name}</b>
+                    </span>
+                  )}
                   {!user.name && <span className="italic">No name</span>}
                 </div>
                 <span className="text-gray-500">{user.email}</span>
               </div>
               <div className="">
-                <Link className="button" href={'/users/'+user._id}>Edit</Link>
+                <Link className="button" href={"/users/" + user._id}>
+                  Edit
+                </Link>
               </div>
             </div>
           ))}

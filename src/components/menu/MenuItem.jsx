@@ -2,7 +2,7 @@ import { useContext, useState } from "react";
 import { CartContext } from "../AppContext";
 import MenuItemTile from "./MenuItemTile";
 import Image from "next/image";
-import toast from "react-hot-toast";
+import FlyingButton from "react-flying-item";
 
 const MenuItem = (menuItem) => {
   const { image, name, description, basePrice, sizes, extraIngredientPrices } =
@@ -34,6 +34,7 @@ const MenuItem = (menuItem) => {
     console.log("hiding popup");
     setShowPopup(false);
   }
+
   let selectedPrice = basePrice;
   if (selectedSize) {
     selectedPrice += selectedSize.price;
@@ -105,13 +106,17 @@ const MenuItem = (menuItem) => {
                 ))}
               </div>
             )}
-            <button
-              className="primary sticky bottom-1"
+
+            <div
+              className="bg-primary sticky bottom-1 rounded-2xl"
               onClick={handleAddToCartButtonClick}
-              type="button"
             >
-              Add to cart &#8377;{selectedPrice}
-            </button>
+              {" "}
+              <FlyingButton targetTop="10%" targetLeft="73%" src={image}>
+                Add to cart &#8377;{selectedPrice}
+              </FlyingButton>{" "}
+            </div>
+
             <button
               type="button"
               className="mt-2"
