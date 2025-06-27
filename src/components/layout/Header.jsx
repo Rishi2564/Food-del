@@ -2,13 +2,15 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { CartContext } from "../AppContext";
 
 const Header = () => {
   const session = useSession();
   const status = session?.status;
   const userData = session.data?.user;
   let userName = userData?.name || userData?.email;
+  const {cartProducts}= useContext(CartContext);
   if (userName && userName.includes(" ")) {
     userName = userName.split(" ")[0];
   }
@@ -40,9 +42,9 @@ const Header = () => {
         {/* Desktop Nav - hidden on mobile */}
         <nav className="hidden md:flex gap-8 text-gray-500 font-semibold items-center">
           <Link className="transition-transform duration-200 hover:scale-110" href="/">Home</Link>
-          <Link className="transition-transform duration-200 hover:scale-110" href="">Menu</Link>
-          <Link className="transition-transform duration-200 hover:scale-110" href="">About</Link>
-          <Link className="transition-transform duration-200 hover:scale-110" href="">Contact</Link>
+          <Link className="transition-transform duration-200 hover:scale-110" href="/menu">Menu</Link>
+          <Link className="transition-transform duration-200 hover:scale-110" href="/#about">About</Link>
+          <Link className="transition-transform duration-200 hover:scale-110" href="/#contact">Contact</Link>
           {status === "authenticated" && (
             <>
               <Link href="/profile" className="whitespace-nowrap transition-transform duration-200 hover:scale-110">
@@ -67,6 +69,9 @@ const Header = () => {
               </Link>
             </>
           )}
+          
+            <Link href={'/cart'}>Cart ({cartProducts.length})</Link>
+          
         </nav>
       </div>
 
@@ -102,6 +107,9 @@ const Header = () => {
               </button>
             </>
           )}
+         
+            <Link href={'/cart'}>Cart ({cartProducts.length})</Link>
+          
         </nav>
       )}
     </header>
