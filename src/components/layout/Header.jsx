@@ -148,13 +148,13 @@ const Header = () => {
           <Link onClick={() => setMenuOpen(false)} href="/">
             Home
           </Link>
-          <Link onClick={() => setMenuOpen(false)} href="">
+          <Link onClick={() => setMenuOpen(false)} href="/menu">
             Menu
           </Link>
-          <Link onClick={() => setMenuOpen(false)} href="">
+          <Link onClick={() => setMenuOpen(false)} href="/#about">
             About
           </Link>
-          <Link onClick={() => setMenuOpen(false)} href="">
+          <Link onClick={() => setMenuOpen(false)} href="/#contact">
             Contact
           </Link>
           {status === "unauthenticated" && (
