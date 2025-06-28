@@ -47,6 +47,7 @@ export function AppProvider({ children }) {
       saveCartProductsToLocalStorage(newProducts);
       return newProducts;
     });
+    toast.success('Added to Cart!');
   }
   return (
     <SessionProvider>
