@@ -1,24 +1,25 @@
+'use client';
 import React from "react";
-import FlyingButton from "react-flying-item";
+import { motion } from "framer-motion";
 
 const AddToCartButton = ({ hasSizesOrExtras, onClick, basePrice, image }) => {
   if (!hasSizesOrExtras) {
     return (
-      <div className="flying-button-parent">
-        {" "}
-        <FlyingButton targetTop={"10%"} targetLeft={"73%"} src={image}>
-          <div onClick={onClick}>
-            Add to cart &#8377;
-            {basePrice}
-          </div>
-        </FlyingButton>
-      </div>
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.05 }}
+        onClick={onClick}
+        className="mt-4 bg-primary text-white rounded-full px-8 py-2 w-full"
+      >
+        Add to cart &#8377;{basePrice}
+      </motion.button>
     );
   }
+
   return (
     <button
       onClick={onClick}
-      className="mt-4 bg-primary text-white rounded-full px-8 py-2"
+      className="mt-4 bg-primary text-white rounded-full px-8 py-2 w-full"
     >
       <span>Add to cart (From &#8377;{basePrice})</span>
     </button>

@@ -2,11 +2,13 @@
 import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import { Menu, ShoppingCart, X } from "lucide-react";
-import { useContext, useEffect, useState} from "react";
+import { useContext, useEffect, useState, useRef } from "react";
 import { CartContext } from "../AppContext";
 
+import { cartIconRef } from "@/libs/cartRef";
 
 const Header = () => {
+  const localCartRef = useRef();
   const session = useSession();
   const status = session?.status;
   const userData = session.data?.user;
@@ -19,7 +21,10 @@ const Header = () => {
   const [lastScrollY, setLastScrollY] = useState(0);
 
   const [menuOpen, setMenuOpen] = useState(false);
- useEffect(() => {
+  useEffect(() => {
+      cartIconRef.current = localCartRef.current;
+    }, []);
+  useEffect(() => {
     let timeout;
 
     const handleScroll = () => {
@@ -40,6 +45,7 @@ const Header = () => {
         setIsVisible(true);
       }, 1500); // Show again if inactive for 1.5s
     };
+    
 
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -48,12 +54,11 @@ const Header = () => {
     };
   }, [lastScrollY]);
   return (
-   <header
-  className={`sticky top-0 z-30 px-4 py-2 bg-transparent  bg-white/80 transition-transform duration-300 ${
-    isVisible ? "translate-y-0" : "-translate-y-full"
-  }`}
->
-
+    <header
+      className={`sticky top-0 z-30 px-4 py-2 bg-transparent  bg-white/80 transition-transform duration-300 ${
+        isVisible ? "translate-y-0" : "-translate-y-full"
+      }`}
+    >
       <div className="flex items-center justify-between">
         {/* Logo */}
         <Link
@@ -130,7 +135,7 @@ const Header = () => {
 
           <Link href={"/cart"} className="flex items-center gap-1 relative">
             <ShoppingCart className="w-6 h-6 text-gray-800" />{" "}
-            <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
               {cartProducts.length}
             </span>
           </Link>
@@ -185,7 +190,7 @@ const Header = () => {
 
           <Link href={"/cart"} className="flex items-center gap-1 relative">
             <ShoppingCart className="w-6 h-6 text-gray-800" />{" "}
-            <span className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
               {cartProducts.length}
             </span>
           </Link>
