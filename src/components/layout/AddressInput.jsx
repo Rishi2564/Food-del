@@ -1,10 +1,11 @@
 import React from 'react'
 
-const AddressInput = ({addressProps,setAddressProps }) => {
+const AddressInput = ({addressProps,setAddressProps, disabled=false }) => {
     const {phone, streetAddress, postalCode, city, country}= addressProps;
   return (
     <> <label htmlFor="">Phone</label>
         <input
+        disabled={disabled}
           type="text"
           placeholder="Ph no"
           name=""
@@ -14,6 +15,7 @@ const AddressInput = ({addressProps,setAddressProps }) => {
         />
         <label htmlFor="">Street Address</label>
         <input
+        disabled={disabled}
           type="text"
           placeholder="Street Address"
           name=""
@@ -26,6 +28,7 @@ const AddressInput = ({addressProps,setAddressProps }) => {
             {" "}
             <label htmlFor="">Postal Code</label>
             <input
+            disabled={disabled}
               type="text"
               placeholder="Postal Code"
               name=""
@@ -37,6 +40,7 @@ const AddressInput = ({addressProps,setAddressProps }) => {
           <div className="">
             <label htmlFor="">City</label>
             <input
+            disabled={disabled}
               type="text"
               placeholder="City"
               name=""
@@ -48,6 +52,7 @@ const AddressInput = ({addressProps,setAddressProps }) => {
         </div>
         <label htmlFor="">Country</label>
         <input
+        disabled={disabled}
           type="text"
           placeholder="Country"
           name=""

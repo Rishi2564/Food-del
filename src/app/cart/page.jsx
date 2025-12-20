@@ -7,10 +7,18 @@ import Image from "next/image";
 import React, { useContext, useEffect, useState } from "react";
 import { useProfile } from "@/components/UseProfile";
 import toast from "react-hot-toast";
+import CartProduct from "@/components/menu/CartProduct";
 const CartPage = () => {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({});
   const { data: profileData } = useProfile();
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if (window.location.href.includes("canceled=1")) {
+        toast.error("Payment failed 😔");
+      }
+    }
+  }, []);
   useEffect(() => {
     if (profileData?.city) {
       const { phone, streetAddress, city, postalCode, country } = profileData;
@@ -44,10 +52,10 @@ const CartPage = () => {
           cartProducts,
         }),
       }).then(async (response) => {
-        if(response.ok){
+        if (response.ok) {
           resolve();
 
-        window.location = await response.json();
+          window.location = await response.json();
         } else {
           reject();
         }
@@ -57,7 +65,17 @@ const CartPage = () => {
       loading: "Redirecting to checkout...",
       success: "Redirecting to checkout",
       error: "Error in checkout, please try again.",
-    }); 
+    });
+  }
+  if(cartProducts?.length===0){
+    return(
+      <section className="mt-8 text-center">
+        <SectionHeader mainHeader={"Cart"} />
+        <div className="my-4">
+          <p>Your shopping cart is empty.🥺</p>
+        </div>
+      </section>
+    )
   }
   return (
     <section className="mt-8">
@@ -71,45 +89,7 @@ const CartPage = () => {
           )}
           {cartProducts?.length > 0 &&
             cartProducts.map((product, index) => (
-              <div className="flex items-center gap-4  border-b py-4">
-                <div className="w-24 rounded-lg">
-                  <Image
-                    className="rounded-lg"
-                    src={product.image}
-                    width={240}
-                    height={240}
-                  />
-                </div>
-                <div className="grow">
-                  <h3 className="font-semibold">{product.name}</h3>
-                  {product.size && (
-                    <div className="text-sm">
-                      Size: <span>{product.size.name}</span>
-                    </div>
-                  )}
-                  {product.extras?.length > 0 && (
-                    <div className="text-sm  text-gray-700">
-                      {product.extras.map((extra) => (
-                        <div>
-                          {extra.name} &#8377;{extra.price}
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                <div className="flex text-lg font-semibold">
-                  &#8377;{cartProductPrice(product)}
-                </div>
-                <div className="px-0">
-                  <button
-                    className="p-1"
-                    onClick={() => removeCartProduct(index)}
-                    type="button"
-                  >
-                    <Trash className="w-4 h-4 " />
-                  </button>
-                </div>
-              </div>
+            <CartProduct product={product} onRemove={removeCartProduct} />
             ))}
           <div className="py-4 flex justify-between">
             <span className="text-left pl-6 text-lg font-medium">

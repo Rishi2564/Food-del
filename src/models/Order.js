@@ -7,6 +7,7 @@ const OrderSchema= new Schema({
     streetAddress:String,
     city:String,
     country:String,
+    postalCode:String,
     cartProducts:Object,
     paid:{type:Boolean, default:false},
 },{timestamps:true});

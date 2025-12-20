@@ -134,10 +134,12 @@ const Header = () => {
           )}
 
           <Link href={"/cart"} className="flex items-center gap-1 relative">
-            <ShoppingCart className="w-6 h-6 text-gray-800" />{" "}
-            <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            <ShoppingCart className="w-6 h-6 text-gray-800" />
+            {cartProducts.length > 0 && (
+              <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
               {cartProducts.length}
             </span>
+            )}
           </Link>
         </nav>
       </div>
@@ -190,9 +192,11 @@ const Header = () => {
 
           <Link href={"/cart"} className="flex items-center gap-1 relative">
             <ShoppingCart className="w-6 h-6 text-gray-800" />{" "}
-            <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
+            {cartProducts.length > 0 && (
+              <span ref={localCartRef} className="absolute -top-2 -right-4 bg-primary text-white text-xs py-1 px-1 rounded-full leading-3">
               {cartProducts.length}
             </span>
+            )}
           </Link>
         </nav>
       )}
