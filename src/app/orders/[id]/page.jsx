@@ -12,6 +12,7 @@ const OrderPage = () => {
   const { clearCart } = useContext(CartContext);
   const [order, setOrder] = useState(null);
   const { id } = useParams();
+  const [loadingOrder, setLoadingOrder] = useState(true);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -21,9 +22,11 @@ const OrderPage = () => {
     }
 
     if (id) {
+      setLoadingOrder(true);
       fetch(`/api/orders?_id=${id}`).then((res) => {
         res.json().then((orderData) => {
           setOrder(orderData);
+          setLoadingOrder(false);
         });
       });
     }
@@ -43,7 +46,7 @@ if(order?.cartProducts){
           <p>We will call you when your order is on the way!!!</p>
         </div>
       </div>
-
+      {loadingOrder && <div>Loading order details...</div>}
       {order && (
         <div className="grid grid-cols-2 gap-16">
           <div>
