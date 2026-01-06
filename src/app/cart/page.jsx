@@ -1,17 +1,20 @@
 "use client";
 import { CartContext, cartProductPrice } from "@/components/AppContext";
+import Trash from "@/components/icons/Trash";
 import AddressInput from "@/components/layout/AddressInput";
 import SectionHeader from "@/components/layout/SectionHeaders";
-import { Trash } from "lucide-react";
-import Image from "next/image";
-import React, { useContext, useEffect, useState } from "react";
-import { useProfile } from "@/components/UseProfile";
-import toast from "react-hot-toast";
 import CartProduct from "@/components/menu/CartProduct";
-const CartPage = () => {
+
+import { useProfile } from "@/components/UseProfile";
+import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+
+export default function CartPage() {
   const { cartProducts, removeCartProduct } = useContext(CartContext);
   const [address, setAddress] = useState({});
   const { data: profileData } = useProfile();
+
   useEffect(() => {
     if (typeof window !== "undefined") {
       if (window.location.href.includes("canceled=1")) {
@@ -19,6 +22,7 @@ const CartPage = () => {
       }
     }
   }, []);
+
   useEffect(() => {
     if (profileData?.city) {
       const { phone, streetAddress, city, postalCode, country } = profileData;
@@ -32,6 +36,7 @@ const CartPage = () => {
       setAddress(addressFromProfile);
     }
   }, [profileData]);
+
   let subtotal = 0;
   for (const p of cartProducts) {
     subtotal += cartProductPrice(p);
@@ -41,12 +46,12 @@ const CartPage = () => {
   }
   async function proceedToCheckout(ev) {
     ev.preventDefault();
+    // address and shopping cart products
+
     const promise = new Promise((resolve, reject) => {
       fetch("/api/checkout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           address,
           cartProducts,
@@ -54,76 +59,75 @@ const CartPage = () => {
       }).then(async (response) => {
         if (response.ok) {
           resolve();
-
           window.location = await response.json();
         } else {
           reject();
         }
       });
     });
+
     await toast.promise(promise, {
-      loading: "Redirecting to checkout...",
-      success: "Redirecting to checkout",
-      error: "Error in checkout, please try again.",
+      loading: "Preparing your order...",
+      success: "Redirecting to payment...",
+      error: "Something went wrong... Please try again later",
     });
   }
-  if(cartProducts?.length===0){
-    return(
+
+  if (cartProducts?.length === 0) {
+    return (
       <section className="mt-8 text-center">
-        <SectionHeader mainHeader={"Cart"} />
-        <div className="my-4">
-          <p>Your shopping cart is empty.🥺</p>
-        </div>
+        <SectionHeader mainHeader="Cart" />
+        <p className="mt-4">Your shopping cart is empty 😔</p>
       </section>
-    )
+    );
   }
+
   return (
     <section className="mt-8">
       <div className="text-center">
-        <SectionHeader mainHeader={"Cart"} />
+        <SectionHeader mainHeader="Cart" />
       </div>
-      <div className=" mt-8 grid gap-8 md:grid-cols-2 ">
-        <div className="">
+      <div className="mt-8 grid gap-8 grid-cols-2">
+        <div>
           {cartProducts?.length === 0 && (
             <div>No products in your shopping cart</div>
           )}
           {cartProducts?.length > 0 &&
-            cartProducts.map((product, index) => (
-            <CartProduct product={product} onRemove={removeCartProduct} />
+            cartProducts.map((product) => (
+              <CartProduct
+                key={product._id}
+                product={product}
+                onRemove={removeCartProduct}
+              />
             ))}
-          <div className="py-4 flex justify-between">
-            <span className="text-left pl-6 text-lg font-medium">
+
+          <div className="py-2 pr-16 flex justify-end items-center">
+            <div className="text-gray-500">
               Subtotal:
-            </span>{" "}
-            <span className="text-lg font-semibold pr-20 text-right">
-              {" "}
-              &#8377;{subtotal}
-            </span>{" "}
-          </div>
-          <div className="py-4 flex justify-between">
-            <span className="text-left pl-6 text-lg font-medium">
+              <br />
               Delivery:
-            </span>{" "}
-            <span className="text-lg font-semibold pr-20 text-right">
-              {" "}
-              &#8377;85
-            </span>{" "}
+              <br />
+              Total:
+            </div>
+            <div className="font-semibold pl-2 text-right">
+              ${subtotal}
+              <br />
+              $5
+              <br />${subtotal + 5}
+            </div>
           </div>
         </div>
-        <div className="bg-gray-100 p-4 rounded-2xl">
+        <div className="bg-gray-100 p-4 rounded-lg">
           <h2>Checkout</h2>
           <form onSubmit={proceedToCheckout}>
-            <label htmlFor="">Address</label>
             <AddressInput
               addressProps={address}
-              setAddressProps={handleAddressChange}
+              setAddressProp={handleAddressChange}
             />
-            <button type="submit">Pay &#8377;{subtotal + 85}</button>
+            <button type="submit">Pay ${subtotal + 5}</button>
           </form>
         </div>
       </div>
     </section>
   );
-};
-
-export default CartPage;
+}

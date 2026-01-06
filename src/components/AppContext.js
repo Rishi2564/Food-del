@@ -32,14 +32,17 @@ export function AppProvider({ children }) {
     setCartProducts([]);
     saveCartProductsToLocalStorage([]);
   }
-  function removeCartProduct(indexToRemove){
-    setCartProducts(prevCartProducts=>{
-        const newCartProducts = prevCartProducts.filter((v,index)=>index !== indexToRemove);
-        saveCartProductsToLocalStorage(newCartProducts);
-        return newCartProducts;
-    })
-    toast.success('Product removed!');
-  }
+  function removeCartProduct(idToRemove) {
+  setCartProducts(prevCartProducts => {
+    const newCartProducts = prevCartProducts.filter(
+      product => product._id !== idToRemove
+    );
+    saveCartProductsToLocalStorage(newCartProducts);
+    return newCartProducts;
+  });
+  toast.success('Product removed!');
+}
+
   function addToCart(product, size = null, extras = []) {
     setCartProducts((prevProducts) => {
       const cartProduct = { ...product, size, extras };
